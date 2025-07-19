@@ -219,6 +219,9 @@ export const ContactsList = () => {
         title: 'Conversation started',
         description: 'You can now chat with this contact',
       });
+
+      // Refresh contacts
+      fetchContacts();
     } catch (error) {
       console.error('Error starting conversation:', error);
       toast({

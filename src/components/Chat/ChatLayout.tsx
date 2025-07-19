@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { supabase } from '@/integrations/supabase/client';
 import { ConversationsList } from './ConversationsList';
-import { DemoSetup } from './DemoSetup';
+
 import { ChatWindow } from './ChatWindow';
 import { ContactsList } from './ContactsList';
 import { ProfileSettings } from './ProfileSettings';
@@ -15,37 +15,13 @@ type ActiveView = 'chat' | 'contacts' | 'settings';
 export const ChatLayout = () => {
   const [activeView, setActiveView] = useState<ActiveView>('chat');
   const [selectedConversationId, setSelectedConversationId] = useState<string | null>(null);
-  const [showDemo, setShowDemo] = useState(false);
+  
   const { signOut } = useAuth();
 
   const handleSignOut = async () => {
     await signOut();
   };
 
-  // Check if user has any conversations or contacts to show demo setup
-  const [hasData, setHasData] = useState<boolean | null>(null);
-
-  useEffect(() => {
-    const checkForData = async () => {
-      const { data: conversations } = await supabase
-        .from('conversation_participants')
-        .select('id')
-        .limit(1);
-      
-      const { data: contacts } = await supabase
-        .from('contacts')
-        .select('id')
-        .limit(1);
-
-      setHasData((conversations && conversations.length > 0) || (contacts && contacts.length > 0));
-    };
-
-    checkForData();
-  }, []);
-
-  if (hasData === false && !showDemo) {
-    return <DemoSetup />;
-  }
 
   return (
     <div className="flex h-screen bg-background">
