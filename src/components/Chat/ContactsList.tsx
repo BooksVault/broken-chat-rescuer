@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/hooks/useAuth';
 import { Button } from '@/components/ui/button';
@@ -6,7 +7,7 @@ import { Input } from '@/components/ui/input';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
 import { Label } from '@/components/ui/label';
-import { UserPlus, Search, MessageSquare } from 'lucide-react';
+import { UserPlus, Search, MessageSquare, Eye } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 
 interface Contact {
@@ -39,6 +40,7 @@ export const ContactsList = () => {
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const { user } = useAuth();
   const { toast } = useToast();
+  const navigate = useNavigate();
 
   useEffect(() => {
     if (user) {
@@ -346,14 +348,26 @@ export const ContactsList = () => {
                     </p>
                   </div>
                 </div>
-                <Button
-                  size="sm"
-                  variant="ghost"
-                  onClick={() => startConversation(contact.contact_id)}
-                  className="text-chat-sidebar-foreground hover:bg-chat-sidebar-hover"
-                >
-                  <MessageSquare className="h-4 w-4" />
-                </Button>
+                <div className="flex items-center space-x-2">
+                  <Button
+                    size="sm"
+                    variant="ghost"
+                    onClick={() => navigate(`/profile/${contact.contact_id}`)}
+                    className="text-chat-sidebar-foreground hover:bg-chat-sidebar-hover"
+                    title="View Profile"
+                  >
+                    <Eye className="h-4 w-4" />
+                  </Button>
+                  <Button
+                    size="sm"
+                    variant="ghost"
+                    onClick={() => startConversation(contact.contact_id)}
+                    className="text-chat-sidebar-foreground hover:bg-chat-sidebar-hover"
+                    title="Start Chat"
+                  >
+                    <MessageSquare className="h-4 w-4" />
+                  </Button>
+                </div>
               </div>
             ))}
           </div>

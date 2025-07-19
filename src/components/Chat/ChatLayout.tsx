@@ -1,20 +1,23 @@
 import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { ConversationsList } from './ConversationsList';
+import { WelcomeGuide } from '../Welcome/WelcomeGuide';
 import { ChatWindow } from './ChatWindow';
 import { ContactsList } from './ContactsList';
 import { ProfileSettings } from './ProfileSettings';
 import { useAuth } from '@/hooks/useAuth';
 import { Button } from '@/components/ui/button';
-import { LogOut, MessageSquare, Users, Settings } from 'lucide-react';
+import { LogOut, MessageSquare, Users, Settings, Search } from 'lucide-react';
 import { cn } from '@/lib/utils';
 
-type ActiveView = 'chat' | 'contacts' | 'settings';
+type ActiveView = 'chat' | 'contacts' | 'settings' | 'welcome';
 
 export const ChatLayout = () => {
-  const [activeView, setActiveView] = useState<ActiveView>('chat');
+  const [activeView, setActiveView] = useState<ActiveView>('welcome');
   const [selectedConversationId, setSelectedConversationId] = useState<string | null>(null);
   
   const { signOut } = useAuth();
+  const navigate = useNavigate();
 
   const handleSignOut = async () => {
     await signOut();
@@ -30,14 +33,26 @@ export const ChatLayout = () => {
             <h1 className="text-lg font-semibold text-chat-sidebar-foreground">
               Chat Rescuer
             </h1>
-            <Button
-              variant="ghost"
-              size="sm"
-              onClick={handleSignOut}
-              className="text-chat-sidebar-foreground hover:bg-chat-sidebar-hover"
-            >
-              <LogOut className="h-4 w-4" />
-            </Button>
+            <div className="flex items-center space-x-2">
+              <Button
+                variant="ghost"
+                size="sm"
+                onClick={() => navigate('/discover')}
+                className="text-chat-sidebar-foreground hover:bg-chat-sidebar-hover"
+                title="Discover People"
+              >
+                <Search className="h-4 w-4" />
+              </Button>
+              <Button
+                variant="ghost"
+                size="sm"
+                onClick={handleSignOut}
+                className="text-chat-sidebar-foreground hover:bg-chat-sidebar-hover"
+                title="Sign Out"
+              >
+                <LogOut className="h-4 w-4" />
+              </Button>
+            </div>
           </div>
         </div>
 
@@ -80,6 +95,18 @@ export const ChatLayout = () => {
 
         {/* Sidebar Content */}
         <div className="flex-1 overflow-hidden">
+          {activeView === 'welcome' && (
+            <div className="p-4 text-center">
+              <h3 className="font-semibold text-chat-sidebar-foreground mb-2">Getting Started</h3>
+              <p className="text-sm text-muted-foreground mb-4">Welcome to Chat Rescuer! Use the tabs to navigate.</p>
+              <Button 
+                onClick={() => navigate('/discover')} 
+                className="w-full mb-2"
+              >
+                Discover People
+              </Button>
+            </div>
+          )}
           {activeView === 'chat' && (
             <ConversationsList
               selectedConversationId={selectedConversationId}
@@ -93,7 +120,9 @@ export const ChatLayout = () => {
 
       {/* Main Content */}
       <div className="flex-1 flex flex-col">
-        {selectedConversationId ? (
+        {activeView === 'welcome' ? (
+          <WelcomeGuide />
+        ) : selectedConversationId ? (
           <ChatWindow conversationId={selectedConversationId} />
         ) : (
           <div className="flex-1 flex items-center justify-center bg-muted/30">
