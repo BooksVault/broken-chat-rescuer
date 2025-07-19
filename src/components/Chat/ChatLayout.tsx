@@ -1,7 +1,5 @@
-import { useState, useEffect } from 'react';
-import { supabase } from '@/integrations/supabase/client';
+import { useState } from 'react';
 import { ConversationsList } from './ConversationsList';
-
 import { ChatWindow } from './ChatWindow';
 import { ContactsList } from './ContactsList';
 import { ProfileSettings } from './ProfileSettings';
@@ -21,7 +19,6 @@ export const ChatLayout = () => {
   const handleSignOut = async () => {
     await signOut();
   };
-
 
   return (
     <div className="flex h-screen bg-background">
