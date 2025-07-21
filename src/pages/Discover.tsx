@@ -34,11 +34,13 @@ export const Discover = () => {
   }, []);
 
   const fetchUsers = async () => {
+    if (!user?.id) return;
+    
     try {
       const { data, error } = await supabase
         .from('profiles')
         .select('*')
-        .neq('user_id', user?.id)
+        .neq('user_id', user.id)
         .order('full_name');
 
       if (error) throw error;
