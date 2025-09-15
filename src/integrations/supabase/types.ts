@@ -73,6 +73,36 @@ export type Database = {
           },
         ]
       }
+      conversation_settings: {
+        Row: {
+          conversation_id: string
+          created_at: string
+          id: string
+          notifications_enabled: boolean | null
+          sound_enabled: boolean | null
+          theme: string | null
+          updated_at: string
+        }
+        Insert: {
+          conversation_id: string
+          created_at?: string
+          id?: string
+          notifications_enabled?: boolean | null
+          sound_enabled?: boolean | null
+          theme?: string | null
+          updated_at?: string
+        }
+        Update: {
+          conversation_id?: string
+          created_at?: string
+          id?: string
+          notifications_enabled?: boolean | null
+          sound_enabled?: boolean | null
+          theme?: string | null
+          updated_at?: string
+        }
+        Relationships: []
+      }
       conversations: {
         Row: {
           avatar_url: string | null
@@ -100,6 +130,60 @@ export type Database = {
           is_group?: boolean | null
           name?: string | null
           updated_at?: string
+        }
+        Relationships: []
+      }
+      feedback: {
+        Row: {
+          created_at: string
+          email: string
+          id: string
+          message: string
+          rating: number | null
+          subject: string | null
+          user_id: string | null
+        }
+        Insert: {
+          created_at?: string
+          email: string
+          id?: string
+          message: string
+          rating?: number | null
+          subject?: string | null
+          user_id?: string | null
+        }
+        Update: {
+          created_at?: string
+          email?: string
+          id?: string
+          message?: string
+          rating?: number | null
+          subject?: string | null
+          user_id?: string | null
+        }
+        Relationships: []
+      }
+      message_reactions: {
+        Row: {
+          created_at: string
+          emoji: string
+          id: string
+          message_id: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          emoji: string
+          id?: string
+          message_id: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          emoji?: string
+          id?: string
+          message_id?: string
+          user_id?: string
         }
         Relationships: []
       }
@@ -140,6 +224,7 @@ export type Database = {
           content: string | null
           conversation_id: string
           created_at: string
+          edited_at: string | null
           file_name: string | null
           file_size: number | null
           file_url: string | null
@@ -148,11 +233,13 @@ export type Database = {
           reply_to: string | null
           sender_id: string
           updated_at: string
+          voice_duration: number | null
         }
         Insert: {
           content?: string | null
           conversation_id: string
           created_at?: string
+          edited_at?: string | null
           file_name?: string | null
           file_size?: number | null
           file_url?: string | null
@@ -161,11 +248,13 @@ export type Database = {
           reply_to?: string | null
           sender_id: string
           updated_at?: string
+          voice_duration?: number | null
         }
         Update: {
           content?: string | null
           conversation_id?: string
           created_at?: string
+          edited_at?: string | null
           file_name?: string | null
           file_size?: number | null
           file_url?: string | null
@@ -174,6 +263,7 @@ export type Database = {
           reply_to?: string | null
           sender_id?: string
           updated_at?: string
+          voice_duration?: number | null
         }
         Relationships: [
           {
@@ -225,6 +315,54 @@ export type Database = {
           updated_at?: string
           user_id?: string
           username?: string | null
+        }
+        Relationships: []
+      }
+      typing_indicators: {
+        Row: {
+          conversation_id: string
+          id: string
+          is_typing: boolean | null
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          conversation_id: string
+          id?: string
+          is_typing?: boolean | null
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          conversation_id?: string
+          id?: string
+          is_typing?: boolean | null
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      user_presence: {
+        Row: {
+          id: string
+          last_seen: string | null
+          status: string | null
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          id?: string
+          last_seen?: string | null
+          status?: string | null
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          id?: string
+          last_seen?: string | null
+          status?: string | null
+          updated_at?: string
+          user_id?: string
         }
         Relationships: []
       }
